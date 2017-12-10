@@ -1,1 +1,3 @@
-export default () => <div>Welcome to next.js!</div>
+export default function HomePage() {
+  return <div>Home Page</div>
+}

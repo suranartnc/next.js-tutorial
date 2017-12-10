@@ -1,0 +1,22 @@
+{
+  "name": "next.js-tutorial",
+  "version": "1.0.0",
+  "description": "Tutorial about Next.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suranartnc/next.js-tutorial.git"
+  },
+  "keywords": [
+    "next.js"
+  ],
+  "author": "Suranart Niamcome",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/suranartnc/next.js-tutorial/issues"
+  },
+  "homepage": "https://github.com/suranartnc/next.js-tutorial#readme"
+}

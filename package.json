@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "start": "NODE_ENV=production node server.js",
+    "api": "node ./api/server.js"    
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,8 @@
     "prettier": "^1.9.1"
   },
   "dependencies": {
+    "faker": "^4.1.0",
+    "json-server": "^0.12.1",
     "next": "^4.2.1",
     "next-routes": "^1.2.0",
     "react": "^16.2.0",

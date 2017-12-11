@@ -2,7 +2,7 @@ require('isomorphic-fetch')
 
 import React from 'react'
 import Head from 'next/head'
-import Error from 'next/error'
+import Error from '../pages/_error'
 
 import MainLayout from '../components/layouts/MainLayout'
 

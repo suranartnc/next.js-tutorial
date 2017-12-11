@@ -2,6 +2,7 @@ require('isomorphic-fetch')
 
 import React from 'react'
 import Head from 'next/head'
+import Error from 'next/error'
 
 import MainLayout from '../components/layouts/MainLayout'
 
@@ -10,7 +11,10 @@ export default class EntryPage extends React.Component {
     return fetch(`http://localhost:4000/posts/${context.query.id}`)
       .then(res => res.json())
       .then(json => {
+        const statusCode = Object.keys(json).length === 0 ? 404 : 200
+
         return {
+          statusCode,
           entry: json
         }
       })
@@ -18,6 +22,10 @@ export default class EntryPage extends React.Component {
 
   render() {
     const { title, body } = this.props.entry
+
+    if (this.props.statusCode !== 200) {
+      return <Error statusCode={this.props.statusCode} />
+    }
 
     return (
       <MainLayout>

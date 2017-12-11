@@ -2,30 +2,44 @@ require('isomorphic-fetch')
 
 import React from 'react'
 import Head from 'next/head'
-import Error from '../pages/_error'
+import { Link } from '../routes'
 
 import MainLayout from '../components/layouts/MainLayout'
 
 export default class EntryPage extends React.Component {
   static getInitialProps(context) {
-    return fetch(`http://localhost:4000/posts/${context.query.id}`)
+    const entryPromise = fetch(
+      `http://localhost:4000/posts/${context.query.id}`
+    )
       .then(res => res.json())
       .then(json => {
-        const statusCode = Object.keys(json).length === 0 ? 404 : 200
-
         return {
-          statusCode,
-          entry: json
+          data: json
         }
       })
+
+    const relateEntriesPromise = fetch(`http://localhost:4000/posts`)
+      .then(res => res.json())
+      .then(json => {
+        return {
+          data: json
+        }
+      })
+
+    return Promise.all([entryPromise, relateEntriesPromise]).then(function(
+      results
+    ) {
+      const [entryResult, relateEntriesResult] = results
+
+      return {
+        entry: entryResult.data,
+        relateEntries: relateEntriesResult.data
+      }
+    })
   }
 
   render() {
-    if (this.props.statusCode !== 200) {
-      return <Error statusCode={this.props.statusCode} />
-    }
-
-    const { title, body } = this.props.entry
+    const { entry: { title, body }, relateEntries } = this.props
 
     return (
       <MainLayout>
@@ -36,6 +50,17 @@ export default class EntryPage extends React.Component {
           <h1>{title}</h1>
           <div dangerouslySetInnerHTML={{ __html: body }} />
         </article>
+        <div>
+          {relateEntries.map(function(entry) {
+            return (
+              <h2 key={entry.id}>
+                <Link route="entry" params={{ id: entry.id }}>
+                  <a>{entry.title}</a>
+                </Link>
+              </h2>
+            )
+          })}
+        </div>
       </MainLayout>
     )
   }

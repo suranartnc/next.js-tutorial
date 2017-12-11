@@ -13,7 +13,9 @@ function MainLayout({ children }) {
       <Header />
       <Nav />
       <div className="main">{children}</div>
-      <style jsx>{MainLayoutStyles}</style>
+      <style jsx global>
+        {MainLayoutStyles}
+      </style>
     </div>
   )
 }

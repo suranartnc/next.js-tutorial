@@ -13,7 +13,11 @@ export default class MyDocument extends Document {
     return (
       <html>
         <Head>
-          <style>{`body { margin: 0 } /* custom! */`}</style>
+          <meta
+            name="viewport"
+            content="initial-scale=1.0, width=device-width"
+          />
+          <link rel="icon" href="/static/images/favicon.ico" />
         </Head>
         <body className="custom_class">
           {this.props.customValue}

@@ -7,10 +7,7 @@ const styles = {
     margin: '0 auto'
   },
   logo: {
-    padding: '20px 15px',
-    textAlign: 'center',
-    fontSize: '24px',
-    fontWeight: 'bold'
+    textAlign: 'center'
   },
   logoLink: {
     color: '#666',
@@ -34,8 +31,10 @@ function MainLayout({ children }) {
   return (
     <div style={styles.wrapper}>
       <div style={styles.logo}>
-        <Link route="home" style={styles.logoLink}>
-          My Blog App
+        <Link route="home">
+          <a style={styles.logoLink}>
+            <img src="/static/images/logo.png" alt="React" />
+          </a>
         </Link>
       </div>
       <nav style={styles.nav}>

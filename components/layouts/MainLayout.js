@@ -4,6 +4,8 @@ import LoadingIndicator from '../LoadingIndicator'
 import Header from '../Header'
 import Nav from '../Nav'
 
+import MainLayoutStyles from './MainLayoutStyles'
+
 function MainLayout({ children }) {
   return (
     <div className="wrapper">
@@ -11,15 +13,7 @@ function MainLayout({ children }) {
       <Header />
       <Nav />
       <div className="main">{children}</div>
-      <style jsx>{`
-        .wrapper {
-          max-width: 1024px;
-          margin: 0 auto;
-        }
-        .main {
-          margin-top: 50px;
-        }
-      `}</style>
+      <style jsx>{MainLayoutStyles}</style>
     </div>
   )
 }

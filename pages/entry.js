@@ -1,6 +1,7 @@
 require('isomorphic-fetch')
 
 import React from 'react'
+import Head from 'next/head'
 
 import MainLayout from '../components/layouts/MainLayout'
 
@@ -20,6 +21,9 @@ export default class EntryPage extends React.Component {
 
     return (
       <MainLayout>
+        <Head>
+          <title>{title}</title>
+        </Head>
         <article>
           <h1>{title}</h1>
           <div dangerouslySetInnerHTML={{ __html: body }} />

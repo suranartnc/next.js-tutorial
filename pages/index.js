@@ -4,17 +4,13 @@ import React from 'react'
 import Head from 'next/head'
 import { Link } from '../routes'
 
+import fetchAPI from '../utils/fetchAPI'
+
 import MainLayout from '../components/layouts/MainLayout'
 
 export default class HomePage extends React.Component {
   static getInitialProps() {
-    return fetch('http://localhost:4000/posts')
-      .then(res => res.json())
-      .then(json => {
-        return {
-          entries: json
-        }
-      })
+    return fetchAPI('/posts')
   }
 
   render() {
@@ -24,7 +20,7 @@ export default class HomePage extends React.Component {
           <title>Homepage</title>
         </Head>
         <div>
-          {this.props.entries.map(function(entry) {
+          {this.props.data.map(function(entry) {
             return (
               <h2 key={entry.id}>
                 <Link route="entry" params={{ id: entry.id }}>

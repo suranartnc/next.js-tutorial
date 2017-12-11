@@ -21,11 +21,11 @@ export default class EntryPage extends React.Component {
   }
 
   render() {
-    const { title, body } = this.props.entry
-
     if (this.props.statusCode !== 200) {
       return <Error statusCode={this.props.statusCode} />
     }
+
+    const { title, body } = this.props.entry
 
     return (
       <MainLayout>

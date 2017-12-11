@@ -3,7 +3,7 @@ require('isomorphic-fetch')
 import React from 'react'
 import { Link } from '../routes'
 
-export default class HomePage extends React.Component {
+export default class EntryPage extends React.Component {
   static getInitialProps(context) {
     return fetch(`http://localhost:4000/posts/${context.query.id}`)
       .then(res => res.json())

@@ -3,6 +3,8 @@ require('isomorphic-fetch')
 import React from 'react'
 import { Link } from '../routes'
 
+import MainLayout from '../components/layouts/MainLayout'
+
 export default class HomePage extends React.Component {
   static getInitialProps() {
     return fetch('http://localhost:4000/posts')
@@ -16,13 +18,7 @@ export default class HomePage extends React.Component {
 
   render() {
     return (
-      <div>
-        <p>Home Page</p>
-        <p>
-          <Link route="about">
-            <a>Go to About page</a>
-          </Link>
-        </p>
+      <MainLayout>
         <div>
           {this.props.entries.map(function(entry) {
             return (
@@ -34,7 +30,7 @@ export default class HomePage extends React.Component {
             )
           })}
         </div>
-      </div>
+      </MainLayout>
     )
   }
 }

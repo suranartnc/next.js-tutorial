@@ -1,7 +1,8 @@
 require('isomorphic-fetch')
 
 import React from 'react'
-import { Link } from '../routes'
+
+import MainLayout from '../components/layouts/MainLayout'
 
 export default class EntryPage extends React.Component {
   static getInitialProps(context) {
@@ -18,17 +19,12 @@ export default class EntryPage extends React.Component {
     const { title, body } = this.props.entry
 
     return (
-      <div>
-        <p>
-          <Link route="home">
-            <a>Go to Home page</a>
-          </Link>
-        </p>
+      <MainLayout>
         <article>
           <h1>{title}</h1>
           <div dangerouslySetInnerHTML={{ __html: body }} />
         </article>
-      </div>
+      </MainLayout>
     )
   }
 }

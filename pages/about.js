@@ -1,13 +1,11 @@
 import React from 'react'
-import { Link } from '../routes'
+
+import MainLayout from '../components/layouts/MainLayout'
 
 export default function AboutPage() {
   return (
-    <div>
+    <MainLayout>
       <p>About Page</p>
-      <Link route="home">
-        <a>Go to Home page</a>
-      </Link>
-    </div>
+    </MainLayout>
   )
 }

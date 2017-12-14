@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from '../../routes'
 
+import LoadingIndicator from '../LoadingIndicator'
+
 const styles = {
   wrapper: {
     maxWidth: '1024px',
@@ -33,6 +35,7 @@ const styles = {
 function Layout({ children }) {
   return (
     <div style={styles.wrapper}>
+      <LoadingIndicator />
       <div style={styles.logo}>
         <Link route="home">
           <a style={styles.logoLink}>

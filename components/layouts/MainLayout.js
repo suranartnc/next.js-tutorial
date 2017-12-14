@@ -35,7 +35,9 @@ function Layout({ children }) {
     <div style={styles.wrapper}>
       <div style={styles.logo}>
         <Link route="home">
-          <a style={styles.logoLink}>My Blog App</a>
+          <a style={styles.logoLink}>
+            <img src="/static/images/reactjs_grande.png" alt="" />
+          </a>
         </Link>
       </div>
       <nav style={styles.nav}>

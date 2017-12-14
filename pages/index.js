@@ -1,6 +1,8 @@
 import 'isomorphic-fetch'
 
 import React from 'react'
+import Head from 'next/head'
+
 import { Link } from '../routes'
 
 import MainLayout from '../components/layouts/MainLayout'
@@ -8,15 +10,20 @@ import MainLayout from '../components/layouts/MainLayout'
 function HomePage({ entries }) {
   return (
     <MainLayout>
-      {entries.map(function(entry) {
-        return (
-          <h2 key={entry.id}>
-            <Link route="entry" params={{ id: entry.id }}>
-              <a>{entry.title}</a>
-            </Link>
-          </h2>
-        )
-      })}
+      <Head>
+        <title>Next.js Tutorial</title>
+      </Head>
+      <div>
+        {entries.map(function(entry) {
+          return (
+            <h2 key={entry.id}>
+              <Link route="entry" params={{ id: entry.id }}>
+                <a>{entry.title}</a>
+              </Link>
+            </h2>
+          )
+        })}
+      </div>
     </MainLayout>
   )
 }

@@ -1,6 +1,8 @@
 import 'isomorphic-fetch'
 
 import React from 'react'
+import Head from 'next/head'
+
 import { Link } from '../routes'
 
 import MainLayout from '../components/layouts/MainLayout'
@@ -8,6 +10,9 @@ import MainLayout from '../components/layouts/MainLayout'
 function EntryPage({ entry }) {
   return (
     <MainLayout>
+      <Head>
+        <title>{entry.title}</title>
+      </Head>
       <h1>{entry.title}</h1>
       <div dangerouslySetInnerHTML={{ __html: entry.body }} />
       <p>

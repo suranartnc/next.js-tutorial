@@ -8,9 +8,14 @@ const typeDefs = `
     post(id: Int): PostType
   }
   type PostType {
-    id: Int,
-    title: String,
+    id: Int
+    title: String
     body: String
+    author: AuthorType
+  }
+  type AuthorType {
+    name: String
+    avatar: String
   }
 `
 

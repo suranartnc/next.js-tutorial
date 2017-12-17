@@ -12,6 +12,7 @@ const typeDefs = `
     title: String
     body: String
     author: AuthorType
+    myCustomField: String
   }
   type AuthorType {
     name: String
@@ -29,6 +30,11 @@ const resolvers = {
     },
     post: (_, args) => {
       return fetchAPI(`/posts/${args.id}`).then(({ data }) => data)
+    }
+  },
+  PostType: {
+    myCustomField: _ => {
+      return `Fetch more data for ID: ${_.id}`
     }
   }
 }

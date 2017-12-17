@@ -18,6 +18,9 @@ const typeDefs = `
     name: String
     avatar: String
   }
+  type Mutation {
+    addPost(title: String!, body: String!): PostType
+  }
 `
 
 const resolvers = {
@@ -35,6 +38,21 @@ const resolvers = {
   PostType: {
     relateEntries: (_, { limit = 5 }) => {
       return fetchAPI(`/posts/?_limit=${limit}`).then(({ data }) => data)
+    }
+  },
+  Mutation: {
+    addPost: (_, args) => {
+      return fetch(`http://localhost:4000/posts/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(args)
+      })
+        .then(res => res.json())
+        .then(data => {
+          return data
+        })
     }
   }
 }

@@ -12,7 +12,7 @@ const typeDefs = `
     title: String
     body: String
     author: AuthorType
-    myCustomField: String
+    relateEntries(limit: Int): [PostType]
   }
   type AuthorType {
     name: String
@@ -33,8 +33,8 @@ const resolvers = {
     }
   },
   PostType: {
-    myCustomField: _ => {
-      return `Fetch more data for ID: ${_.id}`
+    relateEntries: (_, { limit = 5 }) => {
+      return fetchAPI(`/posts/?_limit=${limit}`).then(({ data }) => data)
     }
   }
 }

@@ -7,7 +7,8 @@
     "dev": "node server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
-    "api": "node ./api/server.js"
+    "api": "node ./api/server.js",
+    "graphql": "nodemon ./graphql/server.js --exec babel-node -e js"
   },
   "repository": {
     "type": "git",
@@ -28,10 +29,13 @@
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.3.1",
     "eslint-plugin-react": "^7.5.1",
+    "nodemon": "^1.13.3",
     "prettier": "^1.9.1"
   },
   "dependencies": {
+    "apollo-server-express": "^1.3.0",
     "faker": "^4.1.0",
+    "graphql-tools": "^2.13.0",
     "json-server": "^0.12.1",
     "next": "^4.2.1",
     "next-routes": "^1.2.0",

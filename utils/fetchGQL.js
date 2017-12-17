@@ -2,7 +2,7 @@ import 'isomorphic-fetch'
 
 const api = 'http://localhost:5000/graphql'
 
-export default function fetchGQL(query) {
+export default function fetchGQL(query, variables = null) {
   return fetch(api, {
     method: 'POST',
     headers: {
@@ -10,7 +10,7 @@ export default function fetchGQL(query) {
     },
     body: JSON.stringify({
       query,
-      variables: null,
+      variables,
       operationName: null
     })
   }).then(res => res.json())

@@ -32,8 +32,8 @@ function EntryPage({ entry }) {
 export default class EntryPageContainer extends React.Component {
   static async getInitialProps(context) {
     const query = `
-      {
-        post(id: ${context.query.id}) {
+      query($id: Int!) {
+        post(id: $id) {
           id
           title
           body
@@ -44,7 +44,9 @@ export default class EntryPageContainer extends React.Component {
         }
       }
     `
-    const { data } = await fetchGQL(query)
+    const { data } = await fetchGQL(query, {
+      id: context.query.id
+    })
     return {
       entry: data.post
     }

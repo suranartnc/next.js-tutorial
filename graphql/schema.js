@@ -5,7 +5,7 @@ const typeDefs = `
   type Query {
     hello: String
     posts(limit: Int!): [PostType]
-    post(id: Int): PostType
+    post(id: Int!): PostType
   }
   type PostType {
     id: Int

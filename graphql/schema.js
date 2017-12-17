@@ -5,6 +5,7 @@ const typeDefs = `
   type Query {
     hello: String
     posts(limit: Int): [PostType]
+    post(id: Int): PostType
   }
   type PostType {
     id: Int,
@@ -20,6 +21,9 @@ const resolvers = {
     },
     posts: (_, args) => {
       return fetchAPI(`/posts/?_limit=${args.limit}`).then(({ data }) => data)
+    },
+    post: (_, args) => {
+      return fetchAPI(`/posts/${args.id}`).then(({ data }) => data)
     }
   }
 }

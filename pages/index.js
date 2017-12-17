@@ -31,7 +31,28 @@ function HomePage({ entries }) {
 
 export default class HomePageContainer extends React.Component {
   static getInitialProps() {
-    return fetchAPI(`/posts/`, 'entries')
+    return fetch(`http://localhost:5000/graphql/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        query: `
+          { 
+            posts(limit: 20) { 
+              id 
+              title
+            } 
+          }
+        `,
+        variables: null,
+        operationName: null
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        return { entries: data.data.posts }
+      })
   }
   render() {
     return <HomePage entries={this.props.entries} />

@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link } from '../routes'
+import NavStyles from './NavStyles'
 
-export default function Header() {
+export default function Nav() {
   return (
     <nav>
       <Link route="home">
@@ -10,17 +11,7 @@ export default function Header() {
       <Link route="about">
         <a>About</a>
       </Link>
-      <style jsx>{`
-        nav {
-          display: flex;
-          border-top: 1px solid #eee;
-        }
-        a {
-          padding: 10px 15px;
-          color: #666;
-          text-decoration: none;
-        }
-      `}</style>
+      <style jsx>{NavStyles}</style>
     </nav>
   )
 }

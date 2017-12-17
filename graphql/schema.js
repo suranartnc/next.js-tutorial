@@ -4,7 +4,7 @@ import fetchAPI from '../utils/fetchAPI'
 const typeDefs = `
   type Query {
     hello: String
-    posts: [PostType]
+    posts(limit: Int): [PostType]
   }
   type PostType {
     id: Int,
@@ -18,8 +18,8 @@ const resolvers = {
     hello: (rootValue, args, context, info) => {
       return 'Hello world!'
     },
-    posts: () => {
-      return fetchAPI('/posts/').then(({ data }) => data)
+    posts: (_, args) => {
+      return fetchAPI(`/posts/?_limit=${args.limit}`).then(({ data }) => data)
     }
   }
 }

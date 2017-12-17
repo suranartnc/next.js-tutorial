@@ -32,14 +32,16 @@ function HomePage({ entries }) {
 export default class HomePageContainer extends React.Component {
   static async getInitialProps() {
     const query = `
-      { 
-        posts(limit: 20) { 
+      query($limit: Int!) { 
+        posts(limit: $limit) { 
           id 
           title
         } 
       }
     `
-    const { data } = await fetchGQL(query)
+    const { data } = await fetchGQL(query, {
+      limit: 20
+    })
     return { entries: data.posts }
   }
   render() {

@@ -4,7 +4,7 @@ import fetchAPI from '../utils/fetchAPI'
 const typeDefs = `
   type Query {
     hello: String
-    posts(limit: Int): [PostType]
+    posts(limit: Int!): [PostType]
     post(id: Int): PostType
   }
   type PostType {

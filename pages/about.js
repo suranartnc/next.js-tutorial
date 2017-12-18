@@ -1,11 +1,13 @@
 import React from 'react'
 
-import MainLayout from '../components/layouts/MainLayout'
+import page from '../hocs/page'
 
-export default function AboutPage() {
+function AboutPage() {
   return (
-    <MainLayout>
+    <div>
       <p>About Page</p>
-    </MainLayout>
+    </div>
   )
 }
+
+export default page(AboutPage)

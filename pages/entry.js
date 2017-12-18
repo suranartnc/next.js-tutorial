@@ -1,14 +1,14 @@
 import React from 'react'
 import Head from 'next/head'
 
+import page from '../hocs/page'
+
 import fetchGQL from '../utils/fetchGQL'
 import { Link } from '../routes'
 
-import MainLayout from '../components/layouts/MainLayout'
-
 function EntryPage({ entry }) {
   return (
-    <MainLayout>
+    <div>
       <Head>
         <title>{entry.title}</title>
       </Head>
@@ -25,11 +25,11 @@ function EntryPage({ entry }) {
           )
         })}
       </div>
-    </MainLayout>
+    </div>
   )
 }
 
-export default class EntryPageContainer extends React.Component {
+class EntryPageContainer extends React.Component {
   static async getInitialProps(context) {
     const query = `
       query($id: Int!) {
@@ -56,3 +56,5 @@ export default class EntryPageContainer extends React.Component {
     return <EntryPage entry={this.props.entry} />
   }
 }
+
+export default page(EntryPageContainer)

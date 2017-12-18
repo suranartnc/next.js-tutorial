@@ -3,14 +3,14 @@ import 'isomorphic-fetch'
 import React from 'react'
 import Head from 'next/head'
 
+import page from '../hocs/page'
+
 import fetchGQL from '../utils/fetchGQL'
 import { Link } from '../routes'
 
-import MainLayout from '../components/layouts/MainLayout'
-
 function HomePage({ entries }) {
   return (
-    <MainLayout>
+    <div>
       <Head>
         <title>Next.js Tutorial</title>
       </Head>
@@ -25,11 +25,11 @@ function HomePage({ entries }) {
           )
         })}
       </div>
-    </MainLayout>
+    </div>
   )
 }
 
-export default class HomePageContainer extends React.Component {
+class HomePageContainer extends React.Component {
   static async getInitialProps() {
     const query = `
       query($limit: Int!) { 
@@ -48,3 +48,5 @@ export default class HomePageContainer extends React.Component {
     return <HomePage entries={this.props.entries} />
   }
 }
+
+export default page(HomePageContainer)

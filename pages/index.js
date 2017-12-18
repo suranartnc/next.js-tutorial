@@ -7,12 +7,11 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import page from '../hocs/page'
+import withPreloader from '../hocs/withPreloader'
 
 import { Link } from '../routes'
 
 function HomePage({ data }) {
-  if (data.loading) return 'Loading...'
-
   return (
     <div>
       <Head>
@@ -50,5 +49,6 @@ export default compose(
         limit: 20
       }
     })
-  })
+  }),
+  withPreloader
 )(HomePage)

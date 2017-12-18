@@ -1,24 +1,20 @@
-import 'isomorphic-fetch'
-
 import React from 'react'
-import { compose } from 'recompose'
 import Head from 'next/head'
-import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
 
 import page from '../hocs/page'
-import withPreloader from '../hocs/withPreloader'
-
 import { Link } from '../routes'
+import fetchAPI from '../utils/fetchAPI'
 
 function HomePage({ data }) {
+  const { entries } = data
+
   return (
     <div>
       <Head>
         <title>Next.js Tutorial</title>
       </Head>
       <div>
-        {data.posts.map(function(entry) {
+        {entries.map(function(entry) {
           return (
             <h2 key={entry.id}>
               <Link route="entry" params={{ id: entry.id }}>
@@ -32,23 +28,19 @@ function HomePage({ data }) {
   )
 }
 
-const QUERY = gql`
-  query($limit: Int!) {
-    posts(limit: $limit) {
-      id
-      title
+class HomePageContainer extends React.Component {
+  static async getInitialProps() {
+    const entries = await fetchAPI('/posts')
+
+    return {
+      data: {
+        entries: entries.data
+      }
     }
   }
-`
+  render() {
+    return <HomePage data={this.props.data} />
+  }
+}
 
-export default compose(
-  page,
-  graphql(QUERY, {
-    options: () => ({
-      variables: {
-        limit: 20
-      }
-    })
-  }),
-  withPreloader
-)(HomePage)
+export default page(HomePageContainer)

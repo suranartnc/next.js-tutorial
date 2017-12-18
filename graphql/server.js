@@ -3,7 +3,7 @@ import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 
-import { schema, getRootValue, getContext } from './schema'
+import { schema } from './schema'
 
 const PORT = 5000
 const server = express()
@@ -13,11 +13,9 @@ server.use(cors())
 server.use(
   '/graphql',
   bodyParser.json(),
-  graphqlExpress(request => {
+  graphqlExpress(function() {
     return {
-      schema,
-      rootValue: getRootValue(request),
-      context: getContext(request)
+      schema
     }
   })
 )

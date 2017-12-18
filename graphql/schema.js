@@ -1,5 +1,6 @@
 import { makeExecutableSchema } from 'graphql-tools'
 import fetchAPI from '../utils/fetchAPI'
+import { format as formatDate } from 'date-fns'
 
 const typeDefs = `
   type Query {
@@ -13,6 +14,7 @@ const typeDefs = `
     body: String
     author: AuthorType
     relateEntries(limit: Int): [PostType]
+    pubDate(format: String): String
   }
   type AuthorType {
     name: String
@@ -38,6 +40,9 @@ const resolvers = {
   PostType: {
     relateEntries: (_, { limit = 5 }) => {
       return fetchAPI(`/posts/?_limit=${limit}`).then(({ data }) => data)
+    },
+    pubDate: (_, { format = 'DD-MM-YYYY' }) => {
+      return formatDate(_.pubDate, format)
     }
   },
   Mutation: {

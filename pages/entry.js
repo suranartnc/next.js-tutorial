@@ -1,25 +1,31 @@
 import React from 'react'
 import Head from 'next/head'
+import { compose } from 'recompose'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 
 import page from '../hocs/page'
 
-import fetchGQL from '../utils/fetchGQL'
 import { Link } from '../routes'
 
-function EntryPage({ entry }) {
+function EntryPage({ data }) {
+  if (data.loading) return 'Loading...'
+
+  const { post } = data
+
   return (
     <div>
       <Head>
-        <title>{entry.title}</title>
+        <title>{post.title}</title>
       </Head>
-      <h1>{entry.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: entry.body }} />
+      <h1>{post.title}</h1>
+      <div dangerouslySetInnerHTML={{ __html: post.body }} />
       <div>
-        {entry.relateEntries.map(function(entry) {
+        {post.relateEntries.map(function(post) {
           return (
-            <h2 key={entry.id}>
-              <Link route="entry" params={{ id: entry.id }}>
-                <a>{entry.title}</a>
+            <h2 key={post.id}>
+              <Link route="entry" params={{ id: post.id }}>
+                <a>{post.title}</a>
               </Link>
             </h2>
           )
@@ -29,32 +35,27 @@ function EntryPage({ entry }) {
   )
 }
 
-class EntryPageContainer extends React.Component {
-  static async getInitialProps(context) {
-    const query = `
-      query($id: Int!) {
-        post(id: $id) {
-          id
-          title
-          body
-          relateEntries {
-            id
-            title
-          }
-        }
+const QUERY = gql`
+  query($id: Int!) {
+    post(id: $id) {
+      id
+      title
+      body
+      relateEntries {
+        id
+        title
       }
-    `
-    const { data } = await fetchGQL(query, {
-      id: context.query.id
-    })
-    return {
-      entry: data.post
     }
   }
+`
 
-  render() {
-    return <EntryPage entry={this.props.entry} />
-  }
-}
-
-export default page(EntryPageContainer)
+export default compose(
+  page,
+  graphql(QUERY, {
+    options: props => ({
+      variables: {
+        id: props.url.query.id
+      }
+    })
+  })
+)(EntryPage)

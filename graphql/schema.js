@@ -1,4 +1,8 @@
-import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools'
+import {
+  makeExecutableSchema,
+  addMockFunctionsToSchema,
+  MockList
+} from 'graphql-tools'
 // import fetchAPI from '../utils/fetchAPI'
 // import { format as formatDate } from 'date-fns'
 import casual from 'casual'
@@ -69,6 +73,9 @@ export const schema = makeExecutableSchema({
 })
 
 const mocks = {
+  Query: () => ({
+    posts: (_, { limit = 10 }) => new MockList(limit)
+  }),
   PostType: () => ({
     id: casual.integer(0, 100000),
     title: casual.title,

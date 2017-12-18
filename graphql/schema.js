@@ -84,7 +84,7 @@ const mocks = {
       name: casual.first_name,
       avatar: `${casual.url}profile.jpg`
     },
-    pubDate: casual.date()
+    pubDate: (_, { format }) => casual.date(format)
   })
 }
 

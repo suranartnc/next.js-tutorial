@@ -1,15 +1,32 @@
 import { makeExecutableSchema } from 'graphql-tools'
+import 'isomorphic-fetch'
 
 const typeDefs = `
   type Query {
-    hello: String
+    greet(name: String): String!
+		sum(numbers: [Int!]!): Int
+		categories(first: Int = 3): [CategoryType]
   }
+	type CategoryType {
+		cat_id: String
+		cat_name: String
+	}
 `
 
 const resolvers = {
   Query: {
-    hello: () => {
-      return 'Hello world!'
+    greet: (_, { name = 'World' }) => {
+      return `Hello ${name}!`
+    },
+    sum: (_, { numbers }) => {
+      return numbers.reduce(function(prev, cur) {
+        return prev + cur
+      }, 0)
+    },
+    categories: async (_, { first }) => {
+      const res = await fetch('http://myaday.net/pop/api.php')
+      const json = await res.json()
+      return json.data
     }
   }
 }

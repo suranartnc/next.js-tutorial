@@ -3,10 +3,10 @@ import Head from 'next/head'
 
 import page from '../hocs/page'
 import { Link } from '../routes'
-import fetchAPI from '../utils/fetchAPI'
+import fetchGQL from '../utils/fetchGQL'
 
 function HomePage({ data }) {
-  const { entries } = data
+  const { posts } = data
 
   return (
     <div>
@@ -14,7 +14,7 @@ function HomePage({ data }) {
         <title>Next.js Tutorial</title>
       </Head>
       <div>
-        {entries.map(function(entry) {
+        {posts.map(function(entry) {
           return (
             <h2 key={entry.id}>
               <Link route="entry" params={{ id: entry.id }}>
@@ -28,15 +28,20 @@ function HomePage({ data }) {
   )
 }
 
+const QUERY_POSTS = `
+  query($first: Int){
+    posts(first: $first) {
+      id
+      title
+    }
+  }
+`
+
 class HomePageContainer extends React.Component {
   static async getInitialProps() {
-    const entries = await fetchAPI('/posts')
-
-    return {
-      data: {
-        entries: entries.data
-      }
-    }
+    return await fetchGQL(QUERY_POSTS, {
+      first: 20
+    })
   }
   render() {
     return <HomePage data={this.props.data} />

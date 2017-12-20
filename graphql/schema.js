@@ -1,41 +1,35 @@
 import { makeExecutableSchema } from 'graphql-tools'
 import 'isomorphic-fetch'
 
+import fetchAPI from '../utils/fetchAPI'
+
 const typeDefs = `
   type Query {
-    greet(name: String): String!
-		sum(numbers: [Int!]!): Int
-    categories(first: Int = 3): [CategoryType]
+    posts(first: Int = 5): [PostType]
+    post(id: Int!): PostType
   }
-	type CategoryType {
-		cat_id: String
-    cat_name: String
-    subCats: [CategoryType]
+  type PostType {
+    id: Int
+    title: String
+    body: String
+    author: AuthorType
+    pubDate: Float
+  }
+  type AuthorType {
+    name: String
+    avatar: String
   }
 `
 
 const resolvers = {
   Query: {
-    greet: (_, { name = 'World' }) => {
-      return `Hello ${name}!`
+    posts: async (_, { first }) => {
+      const { data } = await fetchAPI(`/posts?_limit=${first}`)
+      return data
     },
-    sum: (_, { numbers }) => {
-      return numbers.reduce(function(prev, cur) {
-        return prev + cur
-      }, 0)
-    },
-    categories: async (_, { first }) => {
-      const res = await fetch('http://myaday.net/pop/api.php')
-      const json = await res.json()
-
-      return json.data
-    }
-  },
-  CategoryType: {
-    subCats: (_, args) => {
-      console.log('parent', _)
-      // do something with parent data
-      return []
+    post: async (_, { id }) => {
+      const { data } = await fetchAPI(`/posts/${id}`)
+      return data
     }
   }
 }

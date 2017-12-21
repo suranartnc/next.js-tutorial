@@ -1,15 +1,9 @@
-import {
-  makeExecutableSchema,
-  addMockFunctionsToSchema,
-  MockList
-} from 'graphql-tools'
+import { makeExecutableSchema } from 'graphql-tools'
 import 'isomorphic-fetch'
 
-import casual from 'casual'
+import { format as formatDate } from 'date-fns'
 
-// import { format as formatDate } from 'date-fns'
-
-// import fetchAPI from '../utils/fetchAPI'
+import fetchAPI from '../utils/fetchAPI'
 
 const typeDefs = `
   type Query {
@@ -21,53 +15,33 @@ const typeDefs = `
     title: String
     body: String
     author: AuthorType
-    pubDate(format: String = "DD-MM-Y"): String
+    pubDate(format: String = "DD-MM-YYYY"): String
     relatePosts(first: Int = 5): [PostType]
   }
   type AuthorType {
     name: String
     avatar: String
   }
-  type Mutation {
-    addPost(title: String!, body: String!): PostType
-  }
 `
 
 const resolvers = {
   Query: {
-    //   posts: async (_, { first }) => {
-    //     const { data } = await fetchAPI(`/posts?_limit=${first}`)
-    //     return data
-    //   },
-    //   post: async (_, { id }) => {
-    //     const { data } = await fetchAPI(`/posts/${id}`)
-    //     return data
-    //   }
-    // },
-    // PostType: {
-    //   pubDate: (_, { format }) => {
-    //     return formatDate(_.pubDate, format)
-    //   },
-    //   relatePosts: async (_, { first }) => {
-    //     const { data } = await fetchAPI(`/posts?_limit=${first}`)
-    //     return data
-    //   }
+    posts: async (_, { first }) => {
+      const { data } = await fetchAPI(`/posts?_limit=${first}`)
+      return data
+    },
+    post: async (_, { id }) => {
+      const { data } = await fetchAPI(`/posts/${id}`)
+      return data
+    }
   },
-  Mutation: {
-    addPost: async () => {
-      const res = await fetch(`http://localhost:4000/posts`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          title: 'My awesome title',
-          body: 'This is a message.'
-        })
-      })
-      const json = await res.json()
-
-      return json
+  PostType: {
+    pubDate: (_, { format }) => {
+      return formatDate(_.pubDate, format)
+    },
+    relatePosts: async (_, { first }) => {
+      const { data } = await fetchAPI(`/posts?_limit=${first}`)
+      return data
     }
   }
 }
@@ -76,21 +50,3 @@ export const schema = makeExecutableSchema({
   typeDefs,
   resolvers
 })
-
-const mocks = {
-  Query: () => ({
-    posts: (_, { first }) => new MockList(first)
-  }),
-  PostType: () => ({
-    id: casual.integer(0, 100000),
-    title: casual.title,
-    body: casual.words(200),
-    author: {
-      name: casual.first_name,
-      avatar: `http://i.pravatar.cc/300?img=${casual.integer(1, 70)}`
-    },
-    pubDate: (_, { format }) => casual.date(format)
-  })
-}
-
-addMockFunctionsToSchema({ schema, mocks })

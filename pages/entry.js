@@ -6,7 +6,7 @@ import { Link } from '../routes'
 import fetchGQL from '../utils/fetchGQL'
 
 function EntryPage({ data }) {
-  const { entry, relateEntries } = data
+  const { entry } = data
 
   return (
     <div>
@@ -16,7 +16,7 @@ function EntryPage({ data }) {
       <h1>{entry.title}</h1>
       <div dangerouslySetInnerHTML={{ __html: entry.body }} />
       <div>
-        {relateEntries.map(function(entry) {
+        {entry.relatePosts.map(function(entry) {
           return (
             <h2 key={entry.id}>
               <Link route="entry" params={{ id: entry.id }}>
@@ -36,10 +36,10 @@ const QUERY = `
       id
       title
       body
-    }
-    relateEntries: posts(first: $first) {
-      id
-      title
+      relatePosts(first: $first) {
+        id
+        title
+      }
     }
   }
 `

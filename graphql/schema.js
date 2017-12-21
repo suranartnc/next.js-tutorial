@@ -1,8 +1,11 @@
-import { makeExecutableSchema } from 'graphql-tools'
+import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools'
 import 'isomorphic-fetch'
-import { format as formatDate } from 'date-fns'
 
-import fetchAPI from '../utils/fetchAPI'
+import casual from 'casual'
+
+// import { format as formatDate } from 'date-fns'
+
+// import fetchAPI from '../utils/fetchAPI'
 
 const typeDefs = `
   type Query {
@@ -14,7 +17,7 @@ const typeDefs = `
     title: String
     body: String
     author: AuthorType
-    pubDate(format: String = "Do MMM YY"): String
+    pubDate(format: String = "DD-MM-Y"): String
     relatePosts(first: Int = 5): [PostType]
   }
   type AuthorType {
@@ -28,23 +31,23 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    posts: async (_, { first }) => {
-      const { data } = await fetchAPI(`/posts?_limit=${first}`)
-      return data
-    },
-    post: async (_, { id }) => {
-      const { data } = await fetchAPI(`/posts/${id}`)
-      return data
-    }
-  },
-  PostType: {
-    pubDate: (_, { format }) => {
-      return formatDate(_.pubDate, format)
-    },
-    relatePosts: async (_, { first }) => {
-      const { data } = await fetchAPI(`/posts?_limit=${first}`)
-      return data
-    }
+    //   posts: async (_, { first }) => {
+    //     const { data } = await fetchAPI(`/posts?_limit=${first}`)
+    //     return data
+    //   },
+    //   post: async (_, { id }) => {
+    //     const { data } = await fetchAPI(`/posts/${id}`)
+    //     return data
+    //   }
+    // },
+    // PostType: {
+    //   pubDate: (_, { format }) => {
+    //     return formatDate(_.pubDate, format)
+    //   },
+    //   relatePosts: async (_, { first }) => {
+    //     const { data } = await fetchAPI(`/posts?_limit=${first}`)
+    //     return data
+    //   }
   },
   Mutation: {
     addPost: async () => {
@@ -69,3 +72,18 @@ export const schema = makeExecutableSchema({
   typeDefs,
   resolvers
 })
+
+const mocks = {
+  PostType: () => ({
+    id: casual.integer(0, 100000),
+    title: casual.title,
+    body: casual.words(200),
+    author: {
+      name: casual.first_name,
+      avatar: `http://i.pravatar.cc/300?img=${casual.integer(1, 70)}`
+    },
+    pubDate: (_, { format }) => casual.date(format)
+  })
+}
+
+addMockFunctionsToSchema({ schema, mocks })

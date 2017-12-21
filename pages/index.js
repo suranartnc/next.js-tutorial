@@ -35,7 +35,7 @@ const QUERY_POSTS = `
     posts(first: $first) {
       id
       title
-      pubDate(format: "DD MM YYYY")
+      pubDate
     }
   }
 `

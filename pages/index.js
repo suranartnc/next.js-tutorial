@@ -18,7 +18,9 @@ function HomePage({ data }) {
           return (
             <h2 key={entry.id}>
               <Link route="entry" params={{ id: entry.id }}>
-                <a>{entry.title}</a>
+                <a>
+                  {entry.pubDate}: {entry.title}
+                </a>
               </Link>
             </h2>
           )
@@ -33,6 +35,7 @@ const QUERY_POSTS = `
     posts(first: $first) {
       id
       title
+      pubDate(format: "DD MM YYYY")
     }
   }
 `

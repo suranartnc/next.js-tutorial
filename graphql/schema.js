@@ -1,5 +1,6 @@
 import { makeExecutableSchema } from 'graphql-tools'
 import 'isomorphic-fetch'
+import { format as formatDate } from 'date-fns'
 
 import fetchAPI from '../utils/fetchAPI'
 
@@ -13,7 +14,8 @@ const typeDefs = `
     title: String
     body: String
     author: AuthorType
-    pubDate: Float
+    pubDate(format: String = "Do MMM YY"): String
+    relatePosts(first: Int = 5): [PostType]
   }
   type AuthorType {
     name: String
@@ -32,6 +34,15 @@ const resolvers = {
     },
     post: async (_, { id }) => {
       const { data } = await fetchAPI(`/posts/${id}`)
+      return data
+    }
+  },
+  PostType: {
+    pubDate: (_, { format }) => {
+      return formatDate(_.pubDate, format)
+    },
+    relatePosts: async (_, { first }) => {
+      const { data } = await fetchAPI(`/posts?_limit=${first}`)
       return data
     }
   },

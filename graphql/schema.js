@@ -19,6 +19,9 @@ const typeDefs = `
     name: String
     avatar: String
   }
+  type Mutation {
+    addPost(title: String!, body: String!): PostType
+  }
 `
 
 const resolvers = {
@@ -30,6 +33,23 @@ const resolvers = {
     post: async (_, { id }) => {
       const { data } = await fetchAPI(`/posts/${id}`)
       return data
+    }
+  },
+  Mutation: {
+    addPost: async () => {
+      const res = await fetch(`http://localhost:4000/posts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          title: 'My awesome title',
+          body: 'This is a message.'
+        })
+      })
+      const json = await res.json()
+
+      return json
     }
   }
 }

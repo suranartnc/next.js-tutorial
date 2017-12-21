@@ -3,7 +3,7 @@ import Head from 'next/head'
 
 import page from '../hocs/page'
 import { Link } from '../routes'
-import fetchAPI from '../utils/fetchAPI'
+import fetchGQL from '../utils/fetchGQL'
 
 function EntryPage({ data }) {
   const { entry, relateEntries } = data
@@ -30,19 +30,26 @@ function EntryPage({ data }) {
   )
 }
 
+const QUERY = `
+  query($entryId: Int!, $first: Int) {
+    entry: post(id: $entryId) {
+      id
+      title
+      body
+    }
+    relateEntries: posts(first: $first) {
+      id
+      title
+    }
+  }
+`
+
 class EntryPageContainer extends React.Component {
   static async getInitialProps(ctx) {
-    const [{ entry }, { relateEntries }] = await Promise.all([
-      fetchAPI(`/posts/${ctx.query.id}`, 'entry'),
-      fetchAPI('/posts/', 'relateEntries')
-    ])
-
-    return {
-      data: {
-        entry,
-        relateEntries
-      }
-    }
+    return await fetchGQL(QUERY, {
+      entryId: ctx.query.id,
+      first: 5
+    })
   }
   render() {
     return <EntryPage data={this.props.data} />

@@ -15,7 +15,10 @@ server.use(
   bodyParser.json(),
   graphqlExpress(function() {
     return {
-      schema
+      schema,
+      context: {
+        myData: 'myValue'
+      }
     }
   })
 )

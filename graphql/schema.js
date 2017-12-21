@@ -1,4 +1,8 @@
-import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools'
+import {
+  makeExecutableSchema,
+  addMockFunctionsToSchema,
+  MockList
+} from 'graphql-tools'
 import 'isomorphic-fetch'
 
 import casual from 'casual'
@@ -9,7 +13,7 @@ import casual from 'casual'
 
 const typeDefs = `
   type Query {
-    posts(first: Int = 5): [PostType]
+    posts(first: Int = 20): [PostType]
     post(id: Int!): PostType
   }
   type PostType {
@@ -74,6 +78,9 @@ export const schema = makeExecutableSchema({
 })
 
 const mocks = {
+  Query: () => ({
+    posts: (_, { first }) => new MockList(first)
+  }),
   PostType: () => ({
     id: casual.integer(0, 100000),
     title: casual.title,

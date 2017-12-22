@@ -5,13 +5,12 @@ import { compose } from 'recompose'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
+import withPreloader from '../hocs/withPreloader'
 import page from '../hocs/page'
 import { Link } from '../routes'
 
 function HomePage({ data }) {
-  const { loading, posts } = data
-
-  if (loading === true) return 'Loading...'
+  const { posts } = data
 
   return (
     <div>
@@ -53,5 +52,6 @@ export default compose(
         first: 20
       }
     })
-  })
+  }),
+  withPreloader
 )(HomePage)

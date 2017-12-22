@@ -1,9 +1,13 @@
 import React from 'react'
 import Head from 'next/head'
+import { compose } from 'recompose'
 
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
+
+import withPreloader from '../hocs/withPreloader'
 import page from '../hocs/page'
 import { Link } from '../routes'
-import fetchGQL from '../utils/fetchGQL'
 
 function EntryPage({ data }) {
   const { entry } = data
@@ -30,7 +34,7 @@ function EntryPage({ data }) {
   )
 }
 
-const QUERY = `
+const QUERY = gql`
   query($entryId: Int!, $first: Int) {
     entry: post(id: $entryId) {
       id
@@ -44,16 +48,15 @@ const QUERY = `
   }
 `
 
-class EntryPageContainer extends React.Component {
-  static async getInitialProps(ctx) {
-    return await fetchGQL(QUERY, {
-      entryId: ctx.query.id,
-      first: 5
+export default compose(
+  page,
+  graphql(QUERY, {
+    options: ({ url: { query: { id } } }) => ({
+      variables: {
+        entryId: id,
+        first: 5
+      }
     })
-  }
-  render() {
-    return <EntryPage data={this.props.data} />
-  }
-}
-
-export default page(EntryPageContainer)
+  }),
+  withPreloader
+)(EntryPage)

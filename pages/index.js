@@ -1,12 +1,17 @@
 import React from 'react'
 import Head from 'next/head'
+import { compose } from 'recompose'
+
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 
 import page from '../hocs/page'
 import { Link } from '../routes'
-import fetchGQL from '../utils/fetchGQL'
 
 function HomePage({ data }) {
-  const { posts } = data
+  const { loading, posts } = data
+
+  if (loading === true) return 'Loading...'
 
   return (
     <div>
@@ -30,8 +35,8 @@ function HomePage({ data }) {
   )
 }
 
-const QUERY_POSTS = `
-  query($first: Int){
+const QUERY_POSTS = gql`
+  query($first: Int) {
     posts(first: $first) {
       id
       title
@@ -40,15 +45,13 @@ const QUERY_POSTS = `
   }
 `
 
-class HomePageContainer extends React.Component {
-  static async getInitialProps() {
-    return await fetchGQL(QUERY_POSTS, {
-      first: 20
+export default compose(
+  page,
+  graphql(QUERY_POSTS, {
+    options: () => ({
+      variables: {
+        first: 20
+      }
     })
-  }
-  render() {
-    return <HomePage data={this.props.data} />
-  }
-}
-
-export default page(HomePageContainer)
+  })
+)(HomePage)
